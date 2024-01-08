@@ -1,0 +1,157 @@
+openapi: 3.0.3
+info:
+  version: "1.0.0"
+  title: API TRANSMISIONES
+  description: Descripción corta
+externalDocs:
+  description: Más acerca del API
+  url: http://documentacionadicional/api
+servers:
+  - url: /abc/vuce/v1
+tags:
+  - name: Recurso X
+    description: Descripción del recurso
+paths:
+  /recurso:
+    get:
+      tags:
+        - recurso
+      summary: Obtiene todo los Recursos
+      description: Descripción del método
+      operationId: findRecursos
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Recurso'
+        '503':
+          description: Internal Error
+    post:
+      tags:
+        - recurso
+      summary: Agrega un nuevo recurso
+      description: Descripción del método
+      operationId: addRecurso
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Recurso'
+        required: true
+      responses:
+        '204':
+          description: Respuesta sin body
+
+        '503':
+          description: Internal Error
+    put:
+      tags:
+        - recurso
+      summary: Actualizar todo el recurso
+      description: Descripción del método
+      operationId: updateRecurso
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Recurso'
+        required: true
+      responses:
+        '204':
+          description: Respuesta sin body
+        '503':
+          description: Internal error
+  /recurso/buscarPorTag:
+    get:
+      tags:
+        - recurso
+      summary: Busca Recursos por tags
+      description: Descripción del método
+      operationId: findRecursosTags
+      parameters:
+        - name: buscarPorTag
+          in: query
+          required: false
+          explode: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Recurso'
+        '503':
+          description: Internal error
+  /recurso/{id}:
+    get:
+      tags:
+        - recurso
+      summary: Busca recurso por ID
+      description: Descripción del método
+      operationId: getRecursoById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Recurso'
+        '503':
+          description: Internal Error
+    delete:
+      tags:
+        - recurso
+      description: Descripcion
+      operationId: deleteRecurso
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '503':
+          description: Internal Error
+components:
+  schemas:
+    Recurso:
+      required:
+        - name
+        - photoUrls
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 10
+        name:
+          type: string
+          example: saint
+        category:
+          $ref: '#/components/schemas/Categoria'
+    Categoria:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        name:
+          type: string
+          example: Sample
